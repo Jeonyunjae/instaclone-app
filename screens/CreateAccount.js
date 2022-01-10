@@ -55,7 +55,6 @@ export default function CreateAccount({ navigation }) {
   const onNext = (nextOne) => {
     nextOne?.current?.focus();
   };
-
   const onValid = (data) => {
     if (!loading) {
       createAccountMutation({
