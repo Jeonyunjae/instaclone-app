@@ -15,7 +15,6 @@ const Stack = createStackNavigator();
 export default function SharedStackNav({ screenName }) {
   return (
     <Stack.Navigator
-      headerMode="screen"
       screenOptions={{
         headerBackTitleVisible: false,
         headerTintColor: "white",
