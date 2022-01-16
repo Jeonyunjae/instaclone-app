@@ -52,7 +52,6 @@ export default function Search({ navigation }) {
       },
     });
   };
-
   const SearchBox = () => (
     <Input
       width={width}
@@ -76,13 +75,13 @@ export default function Search({ navigation }) {
     });
   }, []);
   const renderItem = ({ item: photo }) => (
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("Photo", {
-        photoId: photo.id,
-      })
-    }
-  >
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Photo", {
+          photoId: photo.id,
+        })
+      }
+    >
       <Image
         source={{ uri: photo.file }}
         style={{ width: width / numColumns, height: 100 }}

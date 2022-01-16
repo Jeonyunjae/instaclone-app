@@ -18,6 +18,7 @@ export default function SharedStackNav({ screenName }) {
     <Stack.Navigator
       screenOptions={{
         headerBackTitleVisible: false,
+        headerMode: "screen",
         headerTintColor: "white",
         headerStyle: {
           borderBottomColor: "rgba(255, 255, 255, 0.3)",

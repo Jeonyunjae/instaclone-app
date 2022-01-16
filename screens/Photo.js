@@ -1,4 +1,3 @@
-
 import { gql, useQuery } from "@apollo/client";
 import React, { useState } from "react";
 import { RefreshControl, View } from "react-native";

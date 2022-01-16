@@ -28,7 +28,7 @@ export default function UplaodNav() {
               headerTintColor: "white",
               headerBackTitleVisible: false,
               headerBackImage: ({ tintColor }) => (
-                <Ionicons color={tintColor} name="close" size={50} />
+                <Ionicons color={tintColor} name="close" size={28} />
               ),
               headerStyle: {
                 backgroundColor: "black",
