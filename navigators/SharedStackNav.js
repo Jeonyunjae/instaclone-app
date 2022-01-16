@@ -9,6 +9,7 @@ import Me from "../screens/Me";
 import { Image } from "react-native";
 import Likes from "../screens/Likes";
 import Comments from "../screens/Comments";
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 
 const Stack = createStackNavigator();
 
