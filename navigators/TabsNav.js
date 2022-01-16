@@ -59,7 +59,7 @@ export default function TabsNav() {
             return {
                 tabPress: (e) => {
                     e.preventDefault();
-                    navigation.navigate("Upload");
+                    navigation.navigate("UploadNav");
                 }
             }
         }
