@@ -39,7 +39,8 @@
     "styled-components": "^5.3.3",
     "react-native-pager-view": "5.4.9",
     "expo-media-library": "~14.0.0",
-    "expo-camera": "~12.1.0"
+    "expo-camera": "~12.1.0",
+    "@react-native-community/slider": "4.1.12"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9"
