@@ -1,7 +1,7 @@
 import { Camera } from "expo-camera";
 import React, { useEffect, useRef, useState } from "react";
 import { Ionicons } from "@expo/vector-icons";
-import { Image, StatusBar, Text, TouchableOpacity } from "react-native";
+import { Alert, Image, StatusBar, Text, TouchableOpacity } from "react-native";
 import Slider from "@react-native-community/slider";
 import styled from "styled-components/native";
 import * as MediaLibrary from "expo-media-library";
@@ -44,9 +44,14 @@ const CloseButton = styled.TouchableOpacity`
   left: 20px;
 `;
 
+const PhotoActions = styled(Actions)`
+  flex-direction: row;
+`;
+
+
 const PhotoAction = styled.TouchableOpacity`
   background-color: white;
-  padding: 5px 10px;
+  padding: 10px 25px;
   border-radius: 4px;
 `;
 const PhotoActionText = styled.Text`
@@ -60,7 +65,7 @@ export default function TakePhoto({ navigation }) {
   const [ok, setOk] = useState(false);
   const [flashMode, setFlashMode] = useState(Camera.Constants.FlashMode.off);
   const [zoom, setZoom] = useState(0);
-  const [cameraType, setCameraType] = useState(Camera.Constants.Type.front);
+  const [cameraType, setCameraType] = useState(Camera.Constants.Type.back);
   const getPermissions = async () => {
     const { granted } = await Camera.requestCameraPermissionsAsync();
     setOk(granted);
@@ -86,6 +91,24 @@ export default function TakePhoto({ navigation }) {
     } else if (flashMode === Camera.Constants.FlashMode.auto) {
       setFlashMode(Camera.Constants.FlashMode.off);
     }
+  };
+  const goToUpload = async (save) => {
+    if (save) {
+      await MediaLibrary.saveToLibraryAsync(takenPhoto);
+    }
+    console.log("Will upload", takenPhoto);
+  };
+  const onUpload = () => {
+    Alert.alert("Save photo?", "Save photo & upload or just upload", [
+      {
+        text: "Save & Upload",
+        onPress: () => goToUpload(true),
+      },
+      {
+        text: "Just Upload",
+        onPress: () => goToUpload(false),
+      },
+    ]);
   };
   const onCameraReady = () => setCameraReady(true);
   const takePhoto = async () => {
@@ -124,6 +147,7 @@ export default function TakePhoto({ navigation }) {
           <SliderContainer>
             <Slider
               style={{ width: 200, height: 20 }}
+              value={zoom}
               minimumValue={0}
               maximumValue={1}
               minimumTrackTintColor="#FFFFFF"
@@ -167,17 +191,14 @@ export default function TakePhoto({ navigation }) {
           </ButtonsContainer>
         </Actions>
       ) : (
-        <Actions>
+        <PhotoAction>
           <PhotoAction onPress={onDismiss}>
             <PhotoActionText>Dismiss</PhotoActionText>
           </PhotoAction>
-          <PhotoAction>
+          <PhotoAction onPress={onUpload}>
             <PhotoActionText>Upload</PhotoActionText>
           </PhotoAction>
-          <PhotoAction>
-            <PhotoActionText>Save & Upload</PhotoActionText>
-          </PhotoAction>
-        </Actions>
+        </PhotoAction>
       )}
     </Container>
   );
