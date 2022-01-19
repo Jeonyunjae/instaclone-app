@@ -28,6 +28,7 @@ const FEED_QUERY = gql`
 `;
 
 export default function Feed() {
+  console.log(FEED_QUERY.definitions);
   const { data, loading, refetch, fetchMore } = useQuery(FEED_QUERY, {
     variables: {
       offset: 0,

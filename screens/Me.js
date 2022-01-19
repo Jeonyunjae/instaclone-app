@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { Text, View } from "react-native";
 import useMe from "../hooks/useMe";
+import { logUserOut } from "../apollo";
 
 export default function Me({ navigation }) {
   const { data } = useMe();
@@ -18,7 +19,9 @@ export default function Me({ navigation }) {
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "white" }}>Me</Text>
+      <Text style={{ color: "white" }} onPress={logUserOut}>
+        Me
+      </Text>
     </View>
   );
 }

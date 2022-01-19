@@ -26,8 +26,8 @@ export const logUserOut = async () => {
 };
 
 const httpLink = createHttpLink({
-  //uri: "http://localhost:4000/graphql",
-  uri: "http://a692-123-212-59-234.ngrok.io/graphql",
+  uri: "http://localhost:4000/graphql",
+  //uri: "http://203e-123-212-59-234.ngrok.io/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {
