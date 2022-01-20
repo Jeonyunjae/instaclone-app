@@ -3,12 +3,12 @@ import { Ionicons } from "@expo/vector-icons";
 import * as MediaLibrary from "expo-media-library";
 import styled from "styled-components/native";
 import {
-    FlatList,
-    Image,
-    StatusBar,
-    TouchableOpacity,
-    useWindowDimensions,
-  } from "react-native";
+  FlatList,
+  Image,
+  StatusBar,
+  TouchableOpacity,
+  useWindowDimensions,
+} from "react-native";
 import { colors } from "../colors";
 
 const Container = styled.View`
@@ -45,38 +45,37 @@ export default function SelectPhoto({ navigation }) {
   const [photos, setPhotos] = useState([]);
   const [chosenPhoto, setChosenPhoto] = useState("");
   const getPhotos = async () => {
-    
     const { assets: photos } = await MediaLibrary.getAssetsAsync();
     setPhotos(photos);
-    setChosenPhoto(photos[0]?.uri);
+    const info = await MediaLibrary.getAssetInfoAsync(photos[0]?.id);
+    setChosenPhoto(info?.localUri);
   };
   const getPermissions = async () => {
-    const {
-      accessPrivileges,
-      canAskAgain,
-    } = await MediaLibrary.getPermissionsAsync();
-    if (accessPrivileges === "none" && canAskAgain) {
-      const { accessPrivileges } = await MediaLibrary.requestPermissionsAsync();
-      if (accessPrivileges !== "none") {
+    const { status, canAskAgain } = await MediaLibrary.getPermissionsAsync();
+    if (status === "undetermined" && canAskAgain) {
+      const { status } = await MediaLibrary.requestPermissionsAsync();
+      if (status !== "undetermined") {
         setOk(true);
         getPhotos();
       }
-    } else if (accessPrivileges !== "none") {
+    } else if (status !== "undetermined") {
       setOk(true);
       getPhotos();
     }
   };
+
   const HeaderRight = () => (
-  <TouchableOpacity
-    onPress={() =>
-      navigation.navigate("UploadForm", {
-        file: chosenPhoto,
-      })
-    }
-  >
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("UploadForm", {
+          file: chosenPhoto,
+        })
+      }
+    >
       <HeaderRightText>Next</HeaderRightText>
     </TouchableOpacity>
   );
+
   useEffect(() => {
     getPermissions();
   }, []);
@@ -87,11 +86,12 @@ export default function SelectPhoto({ navigation }) {
   }, [chosenPhoto]);
   const numColumns = 4;
   const { width } = useWindowDimensions();
-  const choosePhoto = (uri) => {
-    setChosenPhoto(uri);
+  const choosePhoto = async (id) => {
+    const info = await MediaLibrary.getAssetInfoAsync(id);
+    setChosenPhoto(info.localUri);
   };
   const renderItem = ({ item: photo }) => (
-    <ImageContainer onPress={() => choosePhoto(photo.uri)}>
+    <ImageContainer onPress={() => choosePhoto(photo.id)}>
       <Image
         source={{ uri: photo.uri }}
         style={{ width: width / numColumns, height: 100 }}
@@ -107,7 +107,7 @@ export default function SelectPhoto({ navigation }) {
   );
   return (
     <Container>
-    <StatusBar hidden={false} />
+      <StatusBar hidden={false} />
       <Top>
         {chosenPhoto !== "" ? (
           <Image
