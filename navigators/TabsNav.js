@@ -51,6 +51,16 @@ export default function TabsNav() {
         }}
       >
         {() => <SharedStackNav screenName="Search" />}
+      </Tabs.Screen>   
+      <Tabs.Screen
+        name="NotificationsRoot"
+        options={{
+          tabBarIcon: ({ focused, color, size }) => (
+            <TabIcon iconName={"heart"} color={color} focused={focused} />
+          ),
+        }}
+      >
+        {() => <SharedStackNav screenName="Notifications" />}
       </Tabs.Screen>
       <Tabs.Screen
         name="CameraRoot"
@@ -70,16 +80,6 @@ export default function TabsNav() {
           ),
         }}
       />
-      <Tabs.Screen
-        name="NotificationsRoot"
-        options={{
-          tabBarIcon: ({ focused, color, size }) => (
-            <TabIcon iconName={"heart"} color={color} focused={focused} />
-          ),
-        }}
-      >
-        {() => <SharedStackNav screenName="Notifications" />}
-      </Tabs.Screen>
       <Tabs.Screen
         name="MeRoot"
         options={{
