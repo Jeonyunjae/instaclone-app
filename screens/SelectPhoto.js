@@ -10,6 +10,7 @@ import {
   useWindowDimensions,
 } from "react-native";
 import { colors } from "../colors";
+import { setStatusBarStyle } from "expo-status-bar";
 
 const Container = styled.View`
   flex: 1;
