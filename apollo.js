@@ -32,6 +32,7 @@ export const logUserOut = async () => {
   tokenVar(null);
 };
 
+<<<<<<< HEAD
 const uploadHttpLink = createUploadLink({
   uri: "http://localhost:4000/graphql",
 });
@@ -44,6 +45,10 @@ const wsLink = new WebSocketLink({
       token: tokenVar(),
     },
   },
+=======
+const uploadhttpLink = createUploadLink({
+  uri: "http://localhost:4000/graphql",
+>>>>>>> parent of 07556bc (18.8 Room Screen part Six)
 });
 
 const authLink = setContext((_, { headers }) => {

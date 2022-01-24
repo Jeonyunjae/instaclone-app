@@ -139,7 +139,7 @@ export default function TakePhoto({ navigation }) {
           ref={camera}
           onCameraReady={onCameraReady}
         >
-          <CloseButton onPress={() => navigation.navigate("TabsNav")}>
+          <CloseButton onPress={() => navigation.navigate("Tabs")}>
             <Ionicons name="close" color="white" size={30} />
           </CloseButton>
         </Camera>
