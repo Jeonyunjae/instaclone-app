@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View } from "react-native";
 
-export default function Notifications() {
+export default function Map() {
   return (
     <View
       style={{
@@ -11,7 +11,7 @@ export default function Notifications() {
         justifyContent: "center",
       }}
     >
-      <Text style={{ color: "white" }}>Notifications</Text>
+      <Text style={{ color: "white" }}>Map</Text>
     </View>
   );
 }
