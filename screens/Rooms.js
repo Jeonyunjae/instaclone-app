@@ -33,7 +33,7 @@ export default function Rooms() {
         )}
         style={{ width: "100%" }}
         data={data?.seeRooms}
-        keyExtractor={(room) => "" + room.id}
+        keyExtractor={room => "" + room.id}
         renderItem={renderItem}
       />
     </ScreenLayout>

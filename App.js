@@ -9,8 +9,9 @@ import { ApolloProvider, useReactiveVar } from "@apollo/client";
 import client, { isLoggedInVar, tokenVar, cache } from "./apollo";
 import LoggedInNav from "./navigators/LoggedInNav";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AsyncStorageWrapper, persistCache } from "apollo3-cache-persist";
+import { AsyncStorageWrapper, CachePersistor } from "apollo3-cache-persist";
 import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { StatusBar } from "react-native";
 
 export default function App() {
   const [loading, setLoading] = useState(true);
@@ -29,10 +30,11 @@ export default function App() {
       isLoggedInVar(true);
       tokenVar(token);
     }
-    await persistCache({
+    const persistor = new CachePersistor({
       cache,
       storage: new AsyncStorageWrapper(AsyncStorage),
-    });
+      });
+      await persistor.purge();
     return preloadAssets();
   };
   if (loading) {
@@ -46,6 +48,7 @@ export default function App() {
   }
   return (
     <ApolloProvider client={client}>
+    <StatusBar barStyle="light-content" translucent={true}/>
       <NavigationContainer>
         {isLoggedIn ? <LoggedInNav /> : <LoggedOutNav />}
       </NavigationContainer>

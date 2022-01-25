@@ -1,10 +1,22 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
 import { Ionicons } from "@expo/vector-icons";
-import Rooms from "../screens/Rooms";
+import { createStackNavigator } from "@react-navigation/stack";
 import Room from "../screens/Room";
+import Rooms from "../screens/Rooms";
 
 const Stack = createStackNavigator();
+
+const config = {
+  animation: 'spring',
+  config: {
+    stiffness: 1000,
+    damping: 500,
+    mass: 3,
+    overshootClamping: true,
+    restDisplacementThreshold: 0.01,
+    restSpeedThreshold: 0.01,
+  },
+};
 
 export default function MessagesNav() {
   return (
@@ -21,7 +33,7 @@ export default function MessagesNav() {
     >
       <Stack.Screen
         name="Rooms"
-        options={{
+        screenOptions={{
           headerBackImage: ({ tintColor }) => (
             <Ionicons color={tintColor} name="chevron-down" size={30} />
           ),
