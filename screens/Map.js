@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import MapView, { Marker } from 'react-native-maps';
-import { Platform, StyleSheet, Text, View, Dimensions } from 'react-native';
-import Constants from 'expo-constants';
-import * as Location from 'expo-location';
+import MapView from 'react-native-maps';
+import { StyleSheet, Text, View, Dimensions } from 'react-native';
+import useLocation from "../hooks/useLocation";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,59 +13,81 @@ const styles = StyleSheet.create({
   map: {
     width: Dimensions.get('window').width,
     height: Dimensions.get('window').height,
+    flex: 1,
+  },
+  bottomWidget: {
+    position: "absolute",
+    bottom: 0,
+    width: "95%",
+    marginHorizontal: "2.5%",
+    backgroundColor: "#fff",
+    borderTopEndRadius: 5,
+    borderTopStartRadius: 5,
+    zIndex: 5,
+  },
+  whereContainer: {
+    margin: "2.5%",
+    backgroundColor: "#f1f1f1",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    paddingHorizontal: "2.5%",
+    paddingVertical: 8,
+    marginBottom: 20,
+  },
+  whereTo: {
+    fontSize: 22.5,
+    color: "#000",
   },
 });
 
+
 export default function Map() {
-  const [latitude, setLatitude] = useState(0);
-  const [longitude, setLongitude] = useState(0);
-  const [errorMsg, setErrorMsg] = useState(null);
-
+  const { text, location } = useLocation();
+  const [geoLocation, setGeoLocation] = useState([]);
+  
   useEffect(() => {
-    (async () => {
-      if (Platform.OS === 'android' && !Constants.isDevice) {
-        setErrorMsg(
-          'Oops, this will not work on Snack in an Android emulator. Try it on your device!'
-        );
-        return;
-      }
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== 'granted') {
-        setErrorMsg('Permission to access location was denied');
-        return;
-      }
-
-
-      const {coords:{latitude,longitude}} = await Location.getCurrentPositionAsync()
-      
-
-      setLatitude(latitude);
-      setLongitude(longitude);
-    })();
-  }, []);
-
-  let text = 'Waiting..';
-  if (errorMsg) {
-    text = errorMsg;
-  } else if (latitude && longitude) {
-    text= "Latitude:" + latitude + " / Longitude:" + longitude
-  }
-  console.log(text);
+    setGeoLocation(location);
+    console.log("geoLocation", geoLocation);
+  }, [geoLocation, location]);
 
   return (
     <View style={styles.container}>
       <MapView
-        style={styles.map}
         initialRegion={{
-          latitude: latitude,
-          longitude: longitude,
-          latitudeDelta: 0.010,
-          longitudeDelta: 0.010,
+          latitude: geoLocation?.coords?.latitude || 0,
+          longitude: geoLocation?.coords?.longitude || 0,
+          latitudeDelta: 0.045,
+          longitudeDelta: 0.045,
         }}
-      >
-        <Text>{latitude}</Text>
-        
-      </MapView>
+        region={{
+          latitude: geoLocation?.coords?.latitude || 0,
+          longitude: geoLocation?.coords?.longitude || 0,
+          latitudeDelta: 0.045,
+          longitudeDelta: 0.045,
+        }}
+        camera={{
+          center: {
+            latitude: geoLocation?.coords?.latitude || 0,
+            longitude: geoLocation?.coords?.longitude || 0,
+          },
+          heading: 1,
+          pitch: 1,
+          zoom: 1,
+          altitude: 1,
+        }}
+        showsCompass={true}
+        rotateEnabled={false}
+        showsTraffic={true}
+        showsUserLocation={true}
+        showsMyLocationButton={true}
+        style={styles.map}
+      ></MapView>
+      <View style={styles.bottomWidget}>
+        <View style={styles.whereContainer}>
+          <Text>{text}</Text>
+        </View>
+      </View>
     </View>
   );
 }
